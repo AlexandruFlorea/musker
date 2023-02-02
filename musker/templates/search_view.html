@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+<title>Search results</title>
+{% endblock %}
+
+{% block content %}
+<body>
+        <h2 class="title">Search results:</h2>
+        <br>
+    <div style="display: flex;flex-direction: column;">
+        <div class="search-container">
+            {% if not meeps and not users %}
+            <div class="search-item">
+                <h5>No results for "{{ query }}"</h5>
+            </div>
+            {% endif %}
+
+            <!-- Meeps results -->
+            {% if meeps %}
+            <div class="search-item">
+                <h5>Results for "{{ query }}" in Meeps</h5>
+                {% for meep in meeps %}
+                    <div class="alert alert-light" role="alert">
+                      {{ meep }}
+                        {% if request.user == meep.user %}
+                            <a href="{% url 'update' meep.pk  %}" class="btn btn-outline-success">Update meep</a>
+                            <a href="{% url 'delete' meep.pk  %}" class="btn btn-outline-danger">Delete meep</a>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <!-- Users results -->
+            {% if users %}
+            <div class="search-item">
+                <h5>Results for "{{ query }}" in Profiles</h5>
+                {% for user in users %}
+                   <div class="card mb-3" style="max-width: 540px;">
+                      <div class="row g-0">
+                        <div class="col-md-4">
+                          <img src="{% static 'images/default_image.jpg' %}" class="img-fluid rounded-start" alt="profile image">
+                        </div>
+                        <div class="col-md-8">
+                          <div class="card-body">
+                            <h5 class="card-title">{{ profile.user.username }}</h5>
+                            <p class="card-text"><a href="{% url 'profile' profile.user.id %}"> @{{ profile.user.username|lower }}</a></p>
+                            <p class="card-text"><small class="text-muted">Last updated: {{ profile.date_modified }}</small></p>
+                          </div>
+                        </div>
+                      </div>
+                   </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+{% endblock %}
+
