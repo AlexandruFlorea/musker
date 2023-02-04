@@ -13,13 +13,26 @@ from .forms import MeepForm
 
 def home(request):
     if request.user.is_authenticated:
+        form = MeepForm(request.POST or None)
+        if request.method == 'POST':
+            if form.is_valid():
+                meep = form.save(commit=False)
+                meep.user = request.user
+                meep.save()
+                messages.success(request, ('Your meep has been posted.'))
+                return redirect('home')
+
         meeps = Meep.objects.all().order_by('-created_at')
 
         return render(request, 'home.html', {
             'meeps': meeps,
+            'form': form,
         })
     else:
-        return render(request, 'home.html', {})
+        meeps = Meep.objects.all().order_by('-created_at')
+        return render(request, 'home.html', {
+            'meeps': meeps,
+        })
 
 
 def profile_list(request):
@@ -101,7 +114,6 @@ class MeepUpdateView(UpdateView):
     success_url = reverse_lazy('home')
 
 
-
 class MeepDeleteView(DeleteView):
     model = Meep
     template_name = 'meep_confirm_delete.html'
@@ -118,6 +130,6 @@ def search_site(request):
 
             return render(request, 'search_view.html', {
                 'meeps': meeps,
-                'users': users
+                'users': users,
             })
     return redirect(reverse('home'))

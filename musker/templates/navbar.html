@@ -31,9 +31,9 @@
         {% endif %}
 
       </ul>
-        <form class="search" method="POST" action="{% url 'search' %}" style="width: 500px;">
+        <form class="search" method="POST" action="{% url 'search' %}">
             <input type="text" name="q" value="{{ request.POST.q }}" placeholder="Search" required />
-            <button type="submit"><i class="fa fa-search"></i></button>
+            <button type="submit"><i class="fa fa-search"></i>Search</button>
 
             {% csrf_token %}
         </form>
