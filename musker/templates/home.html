@@ -16,13 +16,13 @@
 		  <small class="text-muted">
 		  	({{ meep.created_at}}) By
 		  	@{{ meep.user.username }}
-
 		  </small>
+            <br>
         {% if request.user == meep.user %}
-            <a href="{% url 'update' meep.pk  %}" class="btn btn-outline-success">Update meep</a>
-            <a href="{% url 'delete' meep.pk  %}" class="btn btn-outline-danger">Delete meep</a>
+            <a href="{% url 'update' meep.pk  %}">Update</a>
+            <a href="{% url 'delete' meep.pk  %}">Delete</a>
         {% endif %}
-		</div><br/><br/>
+		</div>
 
 	{% endfor %}
 

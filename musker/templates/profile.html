@@ -20,7 +20,17 @@
                     {% if meeps %}
                         {% for meep in meeps %}
                             <div class="alert alert-light" role="alert">
-                              {{ meep }}
+                              {{ meep.body }}<br/>
+                              <small class="text-muted">
+                                ({{ meep.created_at}}) By
+                                @{{ meep.user.username }}
+
+                              </small>
+                                <br>
+                            {% if request.user == meep.user %}
+                                <a href="{% url 'update' meep.pk  %}">Update</a>
+                                <a href="{% url 'delete' meep.pk  %}">Delete</a>
+                            {% endif %}
                             </div>
                             <br>
                         {% endfor %}
